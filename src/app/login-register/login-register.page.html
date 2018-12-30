@@ -1,9 +1,16 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>login-register</ion-title>
-  </ion-toolbar>
-</ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button></ion-back-button>
+      </ion-buttons>
+      <ion-title *ngIf="id === 'register'" >Register</ion-title>
+      <ion-title *ngIf="id === 'login'">Login</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
 <ion-content padding>
+
+    <ion-button *ngIf="id === 'register'" color="secondary" (click)="goToHome();" >Register</ion-button>
+    <ion-button *ngIf="id === 'login'" color="secondary" (click)="goToHome();">Login</ion-button>
 
 </ion-content>

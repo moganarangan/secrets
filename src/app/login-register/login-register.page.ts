@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-register',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginRegisterPage implements OnInit {
 
-  constructor() { }
+  private id: string;
+
+  constructor(private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
+   this.route
+    .queryParams
+    .subscribe(params => {
+      this.id = params['id'];
+    });
+  }
+
+  goToHome = () => {
+    this.router.navigate(['./home']);
   }
 
 }

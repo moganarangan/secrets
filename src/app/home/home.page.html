@@ -3,9 +3,40 @@
     <ion-title>
       Secrets
     </ion-title>
+    <ion-icon name="search" slot="end" (click)="goToSearchPage();" style="zoom:2.0;"></ion-icon>
+    <ion-icon name="settings" slot="end" (click)="goToSettingsPage();" style="zoom:2.0;"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <h3>This is Home page</h3>
+  <h5>Currently there is no secret available.</h5>
+  <h5>Start adding one by clicking + icon.</h5>
+
+
+  <ion-grid>
+      <ion-row>
+        <ion-col>
+            <ion-card>
+                <ion-item>
+                  <h4>Some content</h4>
+                </ion-item>
+              </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col>
+              <ion-card>
+                  <ion-item>
+                  <h4>Some content</h4>
+                  </ion-item>
+                </ion-card>
+          </ion-col>
+        </ion-row>
+    </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" padding>
+      <ion-fab-button (click)="goToAddPage();">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
 </ion-content>
