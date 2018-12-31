@@ -8,10 +8,14 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AddFieldComponent } from './add-field/add-field.component';
+import { UpdateNameComponent } from './update-name/update-name.component';
+import { UpdatePinComponent } from './update-pin/update-pin.component';
+import { PinComponent } from './pin/pin.component';
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, AddFieldComponent, UpdateNameComponent, UpdatePinComponent, PinComponent],
+  entryComponents: [UpdateNameComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
     StatusBar,

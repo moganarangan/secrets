@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-add-field',
-  templateUrl: './add-field.page.html',
-  styleUrls: ['./add-field.page.scss'],
+  templateUrl: './add-field.component.html',
+  styleUrls: ['./add-field.component.scss']
 })
-export class AddFieldPage implements OnInit {
+export class AddFieldComponent implements OnInit {
 
   constructor() { }
 

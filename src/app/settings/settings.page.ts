@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { UpdateNameComponent } from '../update-name/update-name.component';
 
 @Component({
   selector: 'app-settings',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsPage implements OnInit {
 
-  constructor() { }
+  constructor(private modalController: ModalController) { }
 
   ngOnInit() {
+  }
+
+  async openUpdateName() {
+    const modal = await this.modalController.create({
+      component: UpdateNameComponent,
+      componentProps: { value: 123 }
+    });
+    return await modal.present();
+  }
+
+  openUpdatePin = () => {
   }
 
 }

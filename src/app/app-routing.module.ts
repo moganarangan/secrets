@@ -10,9 +10,6 @@ const routes: Routes = [
   { path: 'add', loadChildren: './add/add.module#AddPageModule' },
   { path: 'edit', loadChildren: './edit/edit.module#EditPageModule' },
   { path: 'view', loadChildren: './view/view.module#ViewPageModule' },
-  { path: 'add-field', loadChildren: './add-field/add-field.module#AddFieldPageModule' },
-  { path: 'pin-modal', loadChildren: './pin-modal/pin-modal.module#PinModalPageModule' },
-  { path: 'edit-settings', loadChildren: './edit-settings/edit-settings.module#EditSettingsPageModule' },
   { path: 'search', loadChildren: './search/search.module#SearchPageModule' },
 ];
 
