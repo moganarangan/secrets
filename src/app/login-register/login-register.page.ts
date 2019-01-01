@@ -14,12 +14,11 @@ export class LoginRegisterPage implements OnInit {
   private isLogin: boolean;
   private user: object;
   private userForm: FormGroup;
+  private loginForm: FormGroup;
+  private loginError: boolean;
 
   constructor(private route: ActivatedRoute,
     private router: Router, private userService: UserService, private formBuilder: FormBuilder) {
-      if (!this.isLogin) {
-        this.createUserRegisterForm();
-      }
     }
 
   ngOnInit() {
@@ -27,6 +26,12 @@ export class LoginRegisterPage implements OnInit {
     .queryParams
     .subscribe(params => {
       this.isLogin = (params['id'] === 'login');
+
+      if (this.isLogin) {
+        this.createLoginForm();
+      } else {
+        this.createUserRegisterForm();
+      }
     });
   }
 
@@ -38,6 +43,12 @@ export class LoginRegisterPage implements OnInit {
     }, {
       validator: ConfirmPinValidator.MatchPin.bind(this)
    });
+  }
+
+  createLoginForm = () => {
+    this.loginForm = this.formBuilder.group({
+      loginPin: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]]
+    });
   }
 
   getRandomId = () => {
@@ -53,14 +64,24 @@ export class LoginRegisterPage implements OnInit {
       };
 
      this.userService.saveUser(this.user).then((successData) => {
-       console.log(successData);
        this.router.navigate(['./home']);
     });
     }
   }
 
   loginAndGo = () => {
+    if (this.loginForm.valid) {
+      this.loginError = false;
 
+      this.userService.getUser().then((user) => {
+        const storedPin = user['pin'];
+        if (storedPin === this.loginForm.value['loginPin']) {
+          this.router.navigate(['./home']);
+        } else {
+          this.loginError = true;
+        }
+      });
+    }
   }
 
 }

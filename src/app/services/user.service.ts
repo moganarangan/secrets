@@ -15,4 +15,8 @@ export class UserService {
     return this.storage.set(USER_STORAGE_KEY, user);
   }
 
+  getUser = () => {
+    return this.storage.get(USER_STORAGE_KEY);
+  }
+
 }
