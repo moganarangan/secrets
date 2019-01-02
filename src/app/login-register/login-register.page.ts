@@ -12,7 +12,7 @@ import { ConfirmPinValidator } from '../helpers/confirm-pin.validator';
 })
 export class LoginRegisterPage implements OnInit {
 
-  private isLogin: boolean;
+  public isLogin: boolean;
   private user: object;
   private userForm: FormGroup;
   private loginForm: FormGroup;
@@ -56,33 +56,33 @@ export class LoginRegisterPage implements OnInit {
     return Math.random().toString(36).replace('0.', '') ;
   }
 
-  registerAndGo = () => {
-    if (this.userForm.valid) {
-      this.user = {
-        'id': this.getRandomId(),
-        'name': this.userForm.value['name'],
-        'pin': this.userForm.value['pin'],
-      };
+  // registerAndGo = () => {
+  //   if (this.userForm.valid) {
+  //     this.user = {
+  //       'id': this.getRandomId(),
+  //       'name': this.userForm.value['name'],
+  //       'pin': this.userForm.value['pin'],
+  //     };
 
-     this.userService.saveUser(this.user).then((successData) => {
-      this.navCtrl.navigateRoot(['/home']);
-    });
-    }
-  }
+  //    this.userService.saveUser(this.user).then((successData) => {
+  //     this.navCtrl.navigateRoot(['/home']);
+  //   });
+  //   }
+  // }
 
-  loginAndGo = () => {
-    if (this.loginForm.valid) {
-      this.loginError = false;
+  // loginAndGo = () => {
+  //   if (this.loginForm.valid) {
+  //     this.loginError = false;
 
-      this.userService.getUser().then((user) => {
-        const storedPin = user['pin'];
-        if (storedPin === this.loginForm.value['loginPin']) {
-          this.navCtrl.navigateRoot(['/home']);
-        } else {
-          this.loginError = true;
-        }
-      });
-    }
-  }
+  //     this.userService.getUser().then((user) => {
+  //       const storedPin = user['pin'];
+  //       if (storedPin === this.loginForm.value['loginPin']) {
+  //         this.navCtrl.navigateRoot(['/home']);
+  //       } else {
+  //         this.loginError = true;
+  //       }
+  //     });
+  //   }
+  // }
 
 }

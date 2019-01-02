@@ -6,19 +6,48 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 })
 export class DatabaseService {
 
-  constructor(private sqlite: SQLite) { }
+  private _db;
 
-  createInitialDatabaseSchema = () => {
-    this.sqlite.create({
+/* tslint:disable */ 
+  private tables: Array<string> = ['CREATE TABLE [IF NOT EXISTS] USER (USER_ID INTEGER PRIMARY KEY UNIQUE, NAME TEXT NOT NULL, PIN INTEGER NOT NULL, DATECREATED TEXT NOT NULL, DATELASTMODIFIED TEXT NOT NULL)',
+  'CREATE TABLE [IF NOT EXISTS] PIN_HISTORY (PIN_HISTORY_ID INTEGER PRIMARY KEY UNIQUE, USER_ID TEXT NOT NULL, PIN INTEGER NOT NULL, DATECREATED TEXT NOT NULL, FOREIGN KEY (USER_ID) REFERENCES USER (USER_ID) ON DELETE CASCADE ON UPDATE NO ACTION)',
+  'CREATE TABLE [IF NOT EXISTS] SECRET_TYPE (SECRET_TYPE_ID INTEGER PRIMARY KEY UNIQUE, NAME TEXT NOT NULL)',
+  'CREATE TABLE [IF NOT EXISTS] BASE_FIELD (BASE_FIELD_ID INTEGER PRIMARY KEY UNIQUE, SECRET_TYPE_ID INTEGER NOT NULL, FIELDNAME TEXT NOT NULL, FIELDTYPE TEXT NOT NULL, FOREIGN KEY (SECRET_TYPE_ID) REFERENCES SECRET_TYPE (SECRET_TYPE_ID) ON DELETE CASCADE ON UPDATE NO ACTION)',
+  'CREATE TABLE [IF NOT EXISTS] SECRET_ITEM (SECRET_ITEM_ID INTEGER PRIMARY KEY UNIQUE, SECRET_TYPE_ID INTEGER NOT NULL, SECRET_TYPE_NAME TEXT NOT NULL, NAME TEXT NOT NULL, DATECREATED TEXT NOT NULL, DATELASTMODIFIED TEXT NOT NULL)',
+  'CREATE TABLE [IF NOT EXISTS] SECRET_ITEM_FIELD (SECRET_ITEM_FIELD_ID INTEGER PRIMARY KEY UNIQUE, SECRET_ITEM_ID INTEGER NOT NULL, FIELDNAME TEXT NOT NULL, FIELDTYPE TEXT NOT NULL, FOREIGN KEY (SECRET_ITEM_ID) REFERENCES SECRET_ITEM (SECRET_ITEM_ID) ON DELETE CASCADE ON UPDATE NO ACTION)',
+  'CREATE TABLE [IF NOT EXISTS] SECRET_ITEM_VALUE (SECRET_ITEM_VALUE_ID INTEGER PRIMARY KEY UNIQUE, SECRET_ITEM_FIELD_ID INTEGER NOT NULL, VALUE TEXT NOT NULL, FOREIGN KEY (SECRET_ITEM_FIELD_ID) REFERENCES SECRET_ITEM_FIELD (SECRET_ITEM_FIELD_ID) ON DELETE CASCADE ON UPDATE NO ACTION)',
+  'CREATE TABLE [IF NOT EXISTS] SECRET_DB_INFO (DBNAME TEXT NOT NULL DEFAULT \'secrets.db\' PRIMARY KEY UNIQUE, DATECREATED TEXT NOT NULL, ISRESTORED INTEGER NOT NULL, BACKUP_DATE TEXT, BACKUP_PATH TEXT)'];
+/* tslint:enable */
+
+  constructor(private sqlite: SQLite) {
+    this._db = this.sqlite.create({
       name: 'secrets.db',
       location: 'default'
-    })
-    .then((db: SQLiteObject) => {
-        db.sqlBatch(['adsa'])
-          .then(() => console.log('Executed SQL'))
-          .catch(e => console.log(e));
+    });
+   }
+
+  createInitialDatabaseSchema = () => {
+    this._db.then((db: SQLiteObject) => {
+        db.sqlBatch(this.tables);
+      });
+  }
+
+  CheckUserExist = (): boolean => {
+    const query = 'SELECT COUNT(1) AS USER_COUNT FROM USER';
+    this._db.then((db: SQLiteObject) => {
+      db.executeSql(query)
+      .then((data) => {
+        if (data.rows.length > 0) {
+          return true;
+        }
+
+        return false;
       })
-      .catch(e => console.log(e));
+      .catch((error) => {
+        return false; } );
+    });
+
+    return false;
   }
 
 }
