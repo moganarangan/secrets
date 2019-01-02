@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NavController } from '@ionic/angular';
 import { ConfirmPinValidator } from '../helpers/confirm-pin.validator';
 
 @Component({
@@ -18,7 +19,7 @@ export class LoginRegisterPage implements OnInit {
   private loginError: boolean;
 
   constructor(private route: ActivatedRoute,
-    private router: Router, private userService: UserService, private formBuilder: FormBuilder) {
+    private userService: UserService, private formBuilder: FormBuilder, private navCtrl: NavController) {
     }
 
   ngOnInit() {
@@ -64,7 +65,7 @@ export class LoginRegisterPage implements OnInit {
       };
 
      this.userService.saveUser(this.user).then((successData) => {
-       this.router.navigate(['./home']);
+      this.navCtrl.navigateRoot(['/home']);
     });
     }
   }
@@ -76,7 +77,7 @@ export class LoginRegisterPage implements OnInit {
       this.userService.getUser().then((user) => {
         const storedPin = user['pin'];
         if (storedPin === this.loginForm.value['loginPin']) {
-          this.router.navigate(['./home']);
+          this.navCtrl.navigateRoot(['/home']);
         } else {
           this.loginError = true;
         }

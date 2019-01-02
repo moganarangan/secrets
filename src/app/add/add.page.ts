@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-add',
@@ -8,13 +8,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AddPage implements OnInit {
 
-  constructor(private route: ActivatedRoute,
-    private router: Router) { }
+  constructor(private navCtrl: NavController) { }
 
   ngOnInit() {
   }
 
   saveAndClose = () => {
-    this.router.navigate(['/home']);
+    this.navCtrl.navigateRoot(['/home']);
   }
 }

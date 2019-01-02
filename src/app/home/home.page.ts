@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -7,21 +7,20 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-  constructor(private route: ActivatedRoute,
-    private router: Router) { }
+  constructor(private navCtrl: NavController) { }
 
   ngOnInit() {
   }
 
   goToAddPage = () => {
-    this.router.navigate(['/add']);
+    this.navCtrl.navigateForward(['/add']);
   }
 
   goToSearchPage = () => {
-    this.router.navigate(['/search']);
+    this.navCtrl.navigateForward(['/search']);
   }
 
   goToSettingsPage = () => {
-    this.router.navigate(['/settings']);
+    this.navCtrl.navigateForward(['/settings']);
   }
 }

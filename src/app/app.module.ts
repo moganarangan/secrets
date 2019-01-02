@@ -5,7 +5,6 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { IonicStorageModule } from '@ionic/storage';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +14,7 @@ import { UpdatePinComponent } from './update-pin/update-pin.component';
 import { PinComponent } from './pin/pin.component';
 
 import { UserService } from './services/user.service';
+import { DatabaseService } from './database/database.service';
 
 @NgModule({
   declarations: [
@@ -28,14 +28,11 @@ import { UserService } from './services/user.service';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule,
-    IonicStorageModule.forRoot({
-      name: '__secretsdb',
-      driverOrder: ['sqlite', 'localstorage']
-    })
+    AppRoutingModule
   ],
   providers: [
     UserService,
+    DatabaseService,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

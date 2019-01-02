@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-initial',
@@ -9,28 +9,28 @@ import { UserService } from '../services/user.service';
 })
 export class InitialPage implements OnInit {
 
-  constructor(public router: Router,  private userService: UserService) { }
+  constructor(private userService: UserService, private navCtrl: NavController) { }
 
   ngOnInit() {
     this.checkUSerExist();
   }
 
   checkUSerExist = () => {
-    this.userService.getUser().then((user) => {
-      if (user === null) {
-        setTimeout(() =>  { this.goToRegister(); }, 500);
-      } else {
-        setTimeout(() =>  { this.goToLogin(); }, 500);
-      }
-    });
+    // this.userService.getUser().then((user) => {
+    //   if (user === null) {
+    //     setTimeout(() =>  { this.goToRegister(); }, 500);
+    //   } else {
+    //     setTimeout(() =>  { this.goToLogin(); }, 500);
+    //   }
+    // });
   }
 
   goToRegister = () => {
-    this.router.navigate(['/login-register'], { queryParams: { id: 'register' } });
+    this.navCtrl.navigateForward(['/login-register'], { queryParams: { id: 'register' } });
   }
 
   goToLogin = () => {
-    this.router.navigate(['/login-register'], { queryParams: { id: 'login' } });
+    this.navCtrl.navigateForward(['/login-register'], { queryParams: { id: 'login' } });
   }
 
 }
