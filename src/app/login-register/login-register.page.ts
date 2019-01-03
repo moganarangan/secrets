@@ -69,9 +69,9 @@ export class LoginRegisterPage implements OnInit {
          'dateLastModified': now
        };
 
-      if (this.userService.saveUser(this.user)) {
+      this.userService.saveUser(this.user).subscribe(res => {
         this.navCtrl.navigateRoot(['/home']);
-      }
+      });
    }
   }
 

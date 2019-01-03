@@ -58,15 +58,21 @@ private typesAndFields: Array<string> = ['INSERT OR IGNORE INTO SECRET_TYPE (SEC
   getUser = (): Observable<any> => {
     const query = 'SELECT USER_ID, NAME, PIN FROM USER';
     return this._db.then((db: SQLiteObject) => {
-      return db.executeSql(query);
+      db.executeSql(query)
+      .then(result => {
+        return result;
       });
+    });
   }
 
   insertUser = (user: any): Observable<any> => {
     const query = 'INSERT INTO USER VALUES(?, ?, ?, ?)';
 
     return this._db.then((db: SQLiteObject) => {
-      return db.executeSql(query, [user.USER_ID, user.PIN, user.DATECREATED, user.DATELASTMODIFIED]);
+      db.executeSql(query, [user.id, user.pin, user.dateCreated, user.dateLastModified])
+      .then(response => {
+        return response;
+      });
     });
   }
 
