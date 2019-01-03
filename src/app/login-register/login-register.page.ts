@@ -18,6 +18,7 @@ export class LoginRegisterPage implements OnInit {
   public userForm: FormGroup;
   public loginForm: FormGroup;
   public loginError: boolean;
+  public enteredPin: Number;
 
   constructor(private route: ActivatedRoute,
     private userService: UserService, private formBuilder: FormBuilder, private navCtrl: NavController) {
@@ -69,25 +70,28 @@ export class LoginRegisterPage implements OnInit {
          'dateLastModified': now
        };
 
-      this.userService.saveUser(this.user).subscribe(res => {
-        this.navCtrl.navigateRoot(['/home']);
-      });
+      this.userService.saveUser(this.user, this.saveUserResult, null);
    }
+  }
+
+  saveUserResult = (response) => {
+    this.navCtrl.navigateRoot(['/home']);
   }
 
    loginAndGo = () => {
      if (this.loginForm.valid) {
        this.loginError = false;
-       const pin = this.loginForm.value['loginPin'];
-
-       this.userService.getUser().subscribe((data) => {
-        if (data.rows.item(0).PIN === pin) {
-          this.navCtrl.navigateRoot(['/home']);
-        } else {
-          this.loginError = true;
-        }
-       });
+       this.enteredPin = this.loginForm.value['loginPin'];
+       this.userService.getUser(this.getUserResult, null);
    }
+  }
+
+  getUserResult = (user: any) => {
+    if (user.rows.item(0).PIN === this.enteredPin) {
+      this.navCtrl.navigateRoot(['/home']);
+    } else {
+      this.loginError = true;
+    }
   }
 
 }

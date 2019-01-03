@@ -17,13 +17,15 @@ export class InitialPage implements OnInit {
   }
 
   checkUSerExist = () => {
-    this.userService.getUser().subscribe((data) => {
-      if (data.rows.length > 0) {
-        this.goToLogin();
-      } else {
-        this.goToRegister();
-      }
-    });
+    this.userService.getUser(this.getUserResult, null);
+  }
+
+  getUserResult = (user: any) => {
+    if (user.rows.length > 0) {
+      this.goToLogin();
+    } else {
+      this.goToRegister();
+    }
   }
 
   goToRegister = (): any => {

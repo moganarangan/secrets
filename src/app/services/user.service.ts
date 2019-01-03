@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DatabaseService } from '../database/database.service';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +9,28 @@ export class UserService {
   constructor(private dbService: DatabaseService) {
   }
 
-  getUser = (): Observable<any> => {
-    return this.dbService.getUser();
+  getUser = (sucessCallback: Function, failureCallback: Function) => {
+    this.dbService.getUser().then((response) => {
+      if (sucessCallback) {
+      sucessCallback(response);
+      }
+    }, (error) => {
+      if (failureCallback) {
+        failureCallback(error);
+        }
+    });
   }
 
-  saveUser = (user: any): Observable<any> => {
-    return this.dbService.insertUser(user);
+  saveUser = (user: any, sucessCallback: Function, failureCallback: Function) => {
+    this.dbService.insertUser(user).then((response) => {
+      if (sucessCallback) {
+      sucessCallback(response);
+      }
+    }, (error) => {
+      if (failureCallback) {
+        failureCallback(error);
+        }
+    });
   }
 
 }

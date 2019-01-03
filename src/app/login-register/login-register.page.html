@@ -15,14 +15,14 @@
 
     <ion-item>
       <ion-label position="fixed">Pin</ion-label>
-      <ion-input type="password" formControlName="pin"></ion-input>
+      <ion-input type="number" formControlName="pin"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="fixed">Confirm Pin</ion-label>
-      <ion-input type="password" formControlName="confirmPin"></ion-input>
+      <ion-input type="number" formControlName="confirmPin"></ion-input>
     </ion-item>
-    <p *ngIf="userForm.errors['pinNotMatch']">Pin does not match.</p>
+    <p *ngIf="userForm?.errors?['pinNotMatch']">Pin does not match.</p>
 
     <ion-button color="secondary" type="button" [disabled]="!userForm.valid" (click)="registerAndGo();" expand="block">Register</ion-button>
 </form>
@@ -31,7 +31,7 @@
     <p *ngIf="loginError">Incorrect pin.</p>
     <ion-item>
         <ion-label position="fixed">Pin</ion-label>
-        <ion-input type="password" formControlName="loginPin"></ion-input>
+        <ion-input type="number" formControlName="loginPin"></ion-input>
       </ion-item>
 
     <ion-button color="secondary" type="button" [disabled]="!loginForm.valid" (click)="loginAndGo();" expand="block">Login</ion-button>
