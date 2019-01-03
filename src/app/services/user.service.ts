@@ -10,7 +10,22 @@ export class UserService {
   }
 
   IsUserExist = (): boolean => {
-    return this.dbService.CheckUserExist();
+    const data = this.dbService.getUser();
+    if (data.rows.length > 0) {
+      return true;
+    }
+
+     return false;
+  }
+
+  checkPin = (pin: number): boolean => {
+    const data = this.dbService.getUser();
+
+    if (data.rows.item(0).PIN === pin) {
+      return true;
+    }
+
+    return false;
   }
 
 }

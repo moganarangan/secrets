@@ -13,10 +13,10 @@ import { ConfirmPinValidator } from '../helpers/confirm-pin.validator';
 export class LoginRegisterPage implements OnInit {
 
   public isLogin: boolean;
-  private user: object;
-  private userForm: FormGroup;
-  private loginForm: FormGroup;
-  private loginError: boolean;
+  public user: object;
+  public userForm: FormGroup;
+  public loginForm: FormGroup;
+  public loginError: boolean;
 
   constructor(private route: ActivatedRoute,
     private userService: UserService, private formBuilder: FormBuilder, private navCtrl: NavController) {
@@ -70,19 +70,17 @@ export class LoginRegisterPage implements OnInit {
   //   }
   // }
 
-  // loginAndGo = () => {
-  //   if (this.loginForm.valid) {
-  //     this.loginError = false;
+   loginAndGo = () => {
+     if (this.loginForm.valid) {
+       this.loginError = false;
+       const pin = this.loginForm.value['loginPin'];
 
-  //     this.userService.getUser().then((user) => {
-  //       const storedPin = user['pin'];
-  //       if (storedPin === this.loginForm.value['loginPin']) {
-  //         this.navCtrl.navigateRoot(['/home']);
-  //       } else {
-  //         this.loginError = true;
-  //       }
-  //     });
-  //   }
-  // }
+       if (this.userService.checkPin(pin)) {
+        this.navCtrl.navigateRoot(['/home']);
+     } else {
+      this.loginError = true;
+    }
+   }
+  }
 
 }
