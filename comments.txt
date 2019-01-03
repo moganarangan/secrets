@@ -1,3 +1,6 @@
 ionic generate provider database --no-spec
 
 Math.floor(Math.random() * 9000000000000000) + 1000000000000000;
+
+moment.utc().format();
+moment('2019-01-03T08:51:18Z').local().format();

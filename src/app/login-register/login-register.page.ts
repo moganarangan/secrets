@@ -4,6 +4,7 @@ import { UserService } from '../services/user.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { ConfirmPinValidator } from '../helpers/confirm-pin.validator';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-login-register',
@@ -58,12 +59,14 @@ export class LoginRegisterPage implements OnInit {
 
    registerAndGo = () => {
      if (this.userForm.valid) {
-       this.user = {
+      const now = moment.utc().format();
+
+      this.user = {
          'id': this.getRandomId(),
          'name': this.userForm.value['name'],
          'pin': this.userForm.value['pin'],
-         'dateCreated': 'todaydate',
-         'dateLastModified': 'todaydate'
+         'dateCreated': now,
+         'dateLastModified': now
        };
 
       if (this.userService.saveUser(this.user)) {
