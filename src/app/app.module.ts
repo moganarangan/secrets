@@ -15,6 +15,7 @@ import { UpdateNameComponent } from './update-name/update-name.component';
 import { UpdatePinComponent } from './update-pin/update-pin.component';
 import { PinComponent } from './pin/pin.component';
 
+import { CipherService } from './helpers/cipher.service';
 import { UserService } from './services/user.service';
 import { DatabaseService } from './database/database.service';
 
@@ -34,6 +35,7 @@ import { DatabaseService } from './database/database.service';
   ],
   providers: [
     SQLite,
+    CipherService,
     UserService,
     DatabaseService,
     StatusBar,
