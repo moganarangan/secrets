@@ -22,7 +22,7 @@
       <ion-label position="fixed">Confirm Pin</ion-label>
       <ion-input type="password" formControlName="confirmPin"></ion-input>
     </ion-item>
-    <p *ngIf="userForm.errors?.pinNotMatch">Pin does not match.</p>
+    <p *ngIf="userForm.errors['pinNotMatch']">Pin does not match.</p>
 
     <ion-button color="secondary" type="button" [disabled]="!userForm.valid" (click)="registerAndGo();" expand="block">Register</ion-button>
 </form>

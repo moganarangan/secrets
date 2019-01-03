@@ -56,30 +56,34 @@ export class LoginRegisterPage implements OnInit {
     return Math.random().toString(36).replace('0.', '') ;
   }
 
-  // registerAndGo = () => {
-  //   if (this.userForm.valid) {
-  //     this.user = {
-  //       'id': this.getRandomId(),
-  //       'name': this.userForm.value['name'],
-  //       'pin': this.userForm.value['pin'],
-  //     };
+   registerAndGo = () => {
+     if (this.userForm.valid) {
+       this.user = {
+         'id': this.getRandomId(),
+         'name': this.userForm.value['name'],
+         'pin': this.userForm.value['pin'],
+         'dateCreated': 'todaydate',
+         'dateLastModified': 'todaydate'
+       };
 
-  //    this.userService.saveUser(this.user).then((successData) => {
-  //     this.navCtrl.navigateRoot(['/home']);
-  //   });
-  //   }
-  // }
+      if (this.userService.saveUser(this.user)) {
+        this.navCtrl.navigateRoot(['/home']);
+      }
+   }
+  }
 
    loginAndGo = () => {
      if (this.loginForm.valid) {
        this.loginError = false;
        const pin = this.loginForm.value['loginPin'];
 
-       if (this.userService.checkPin(pin)) {
-        this.navCtrl.navigateRoot(['/home']);
-     } else {
-      this.loginError = true;
-    }
+       this.userService.getUser().subscribe((data) => {
+        if (data.rows.item(0).PIN === pin) {
+          this.navCtrl.navigateRoot(['/home']);
+        } else {
+          this.loginError = true;
+        }
+       });
    }
   }
 

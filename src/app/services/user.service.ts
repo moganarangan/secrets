@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DatabaseService } from '../database/database.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,23 +10,12 @@ export class UserService {
   constructor(private dbService: DatabaseService) {
   }
 
-  IsUserExist = (): boolean => {
-    const data = this.dbService.getUser();
-    if (data.rows.length > 0) {
-      return true;
-    }
-
-     return false;
+  getUser = (): Observable<any> => {
+    return this.dbService.getUser();
   }
 
-  checkPin = (pin: number): boolean => {
-    const data = this.dbService.getUser();
-
-    if (data.rows.item(0).PIN === pin) {
-      return true;
-    }
-
-    return false;
+  saveUser = (user: any): Observable<any> => {
+    return this.dbService.insertUser(user);
   }
 
 }

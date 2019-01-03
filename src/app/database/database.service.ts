@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -54,29 +55,19 @@ private typesAndFields: Array<string> = ['INSERT OR IGNORE INTO SECRET_TYPE (SEC
       });
   }
 
-  getUser = (): any => {
+  getUser = (): Observable<any> => {
     const query = 'SELECT USER_ID, NAME, PIN FROM USER';
-    this._db.then((db: SQLiteObject) => {
-      db.executeSql(query)
-      .then((data) => {
-        return data; });
+    return this._db.then((db: SQLiteObject) => {
+      return db.executeSql(query);
       });
   }
 
-  insertUser = (user: any): Boolean => {
+  insertUser = (user: any): Observable<any> => {
     const query = 'INSERT INTO USER VALUES(?, ?, ?, ?)';
-    let result = true;
 
-    this._db.then((db: SQLiteObject) => {
-      db.executeSql(query, [user.USER_ID, user.PIN, user.DATECREATED, user.DATELASTMODIFIED])
-      .then(res => res)
-      .catch(error => {
-        result = false;
-      });
+    return this._db.then((db: SQLiteObject) => {
+      return db.executeSql(query, [user.USER_ID, user.PIN, user.DATECREATED, user.DATELASTMODIFIED]);
     });
-
-    return result;
   }
-
 
 }
