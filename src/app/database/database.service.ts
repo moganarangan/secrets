@@ -72,7 +72,7 @@ export class DatabaseService {
         location: 'default'
       })
       .then((db: SQLiteObject) => {
-        db.executeSql(query)
+        db.executeSql(query, [])
         .then((data) => {
           resolve(data);
         })
