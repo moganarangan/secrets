@@ -67,15 +67,17 @@ export class DatabaseService {
     const query = 'SELECT USER_ID, NAME, PIN FROM USER';
 
     return new Promise ((resolve, reject) => {
-      this._db.then((db: SQLiteObject) => {
+      this.sqlite.create({
+        name: 'secrets.db',
+        location: 'default'
+      })
+      .then((db: SQLiteObject) => {
         db.executeSql(query)
         .then((data) => {
           resolve(data);
-        }, (error) => {
-          reject(error);
         })
         .catch((error) => {
-          console.log(error);
+          reject(error);
         });
       });
     });
@@ -89,7 +91,8 @@ export class DatabaseService {
         db.executeSql(query, [user.id, user.pin, user.dateCreated, user.dateLastModified])
         .then((data) => {
           resolve(data);
-        }, (error) => {
+        })
+        .catch((error) => {
           reject(error);
         });
       });
