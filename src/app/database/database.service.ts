@@ -87,11 +87,11 @@ export class DatabaseService {
   }
 
   insertUser = (user: any): Promise<any> => {
-    const query = 'INSERT INTO USER VALUES(?, ?, ?, ?)';
+    const query = 'INSERT INTO USER VALUES(?, ?, ?, ?, ?)';
 
     return new Promise ((resolve, reject) => {
       this._db.then((db: SQLiteObject) => {
-        db.executeSql(query, [user.id, user.pin, user.dateCreated, user.dateLastModified])
+        db.executeSql(query, [user.id, user.name, user.pin, user.dateCreated, user.dateLastModified])
         .then((data) => {
           resolve(data);
         })
