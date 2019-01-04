@@ -8,5 +8,14 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-button color="secondary" (click)="saveAndClose();">Save</ion-button>
+    
+    <form [formGroup]="form">
+        <ion-item *ngFor="let field of config">
+            <ion-label position="fixed">{{field.name}}</ion-label>
+            <ion-input type="text" formControlName="{{field.name}}"></ion-input>
+        </ion-item>
+
+        <ion-button color="secondary" (click)="saveAndClose();">Save</ion-button>
+    </form>
+    
 </ion-content>

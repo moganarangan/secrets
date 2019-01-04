@@ -44,6 +44,10 @@ export class DatabaseService {
     this._db = this.sqlite.create({
       name: 'secrets.db',
       location: 'default'
+    })
+    .then()
+    .catch((error) => {
+      console.log(error);
     });
    }
 
@@ -60,6 +64,9 @@ export class DatabaseService {
         .catch((error) => {
           console.log(error);
         });
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 

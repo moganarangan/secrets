@@ -1,3 +1,4 @@
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 
@@ -8,9 +9,19 @@ import { NavController } from '@ionic/angular';
 })
 export class AddPage implements OnInit {
 
-  constructor(private navCtrl: NavController) { }
+  public config: Array<any> = [{'name': 'userName'}, {'name': 'password'}, {'name': 'field1'}];
+  public form: FormGroup;
+
+  constructor(private navCtrl: NavController, private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.form = this.createGroup();
+  }
+
+  createGroup = () => {
+    const group = this.fb.group({});
+    this.config.forEach(control => group.addControl(control.name, new FormControl('', [Validators.required])));
+    return group;
   }
 
   saveAndClose = () => {

@@ -8,3 +8,6 @@ moment('2019-01-03T08:51:18Z').local().format();
 https://www.thepolyglotdeveloper.com/2014/10/implement-aes-strength-encryption-javascript/
 
 https://www.npmjs.com/package/node-forge/v/0.7.6
+
+
+https://toddmotto.com/angular-dynamic-components-forms
