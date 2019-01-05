@@ -27,13 +27,12 @@ import { HomePage } from './home/home.page';
 import { CipherService } from './helpers/cipher.service';
 import { UserService } from './services/user.service';
 import { DatabaseService } from './database/database.service';
-import { InitialPage } from './initial/initial.page';
+import { SecretTypesService } from './services/secret-types.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginRegisterPage,
-    InitialPage,
     HomePage,
     AddPage,
     EditPage,
@@ -57,6 +56,7 @@ import { InitialPage } from './initial/initial.page';
     CipherService,
     UserService,
     DatabaseService,
+    SecretTypesService,
     StatusBar,
     SplashScreen,
     {provide: SQLite, useClass: SQLiteMock},

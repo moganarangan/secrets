@@ -9,13 +9,19 @@
 
 <ion-content padding>
     
-    <form [formGroup]="form">
-        <ion-item *ngFor="let field of config">
-            <ion-label position="fixed">{{field.name}}</ion-label>
-            <ion-input type="text" formControlName="{{field.name}}"></ion-input>
+    <ul>
+        <li *ngFor="let type of types">
+            <h3>{{type.typeName}}</h3>
+        </li>
+    </ul>
+
+    <form *ngIf="form"  [formGroup]="form">
+        <ion-item *ngFor="let field of fields">
+            <ion-label position="fixed">{{field.fieldName}}</ion-label>
+            <ion-input type="{{field.fieldType}}" formControlName="{{field.fieldName}}"></ion-input>
         </ion-item>
 
         <ion-button color="secondary" (click)="saveAndClose();">Save</ion-button>
     </form>
-    
+
 </ion-content>

@@ -6,7 +6,7 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 })
 export class DatabaseService {
 
-  private _db;
+  private _db: Promise<SQLiteObject>;
 
 /* tslint:disable */ 
   private tables: Array<string> = ['CREATE TABLE IF NOT EXISTS USER (USER_ID TEXT PRIMARY KEY UNIQUE, NAME TEXT NOT NULL, PIN INTEGER NOT NULL, DATECREATED TEXT NOT NULL, DATELASTMODIFIED TEXT NOT NULL)',
@@ -70,14 +70,15 @@ export class DatabaseService {
 
   getUser = (): Promise<any> => {
     const query = 'SELECT USER_ID, NAME, PIN FROM USER';
+    return this.executeQuery(query, []);
+  }
+
+  insertUser = (user: any): Promise<any> => {
+    const query = 'INSERT INTO USER VALUES(?, ?, ?, ?, ?)';
 
     return new Promise ((resolve, reject) => {
-      this.sqlite.create({
-        name: 'secrets.db',
-        location: 'default'
-      })
-      .then((db: SQLiteObject) => {
-        db.executeSql(query, [])
+      this._db.then((db: SQLiteObject) => {
+        db.executeSql(query, [user.id, user.name, user.pin, user.dateCreated, user.dateLastModified])
         .then((data) => {
           resolve(data);
         })
@@ -88,12 +89,24 @@ export class DatabaseService {
     });
   }
 
-  insertUser = (user: any): Promise<any> => {
-    const query = 'INSERT INTO USER VALUES(?, ?, ?, ?, ?)';
+  getAllSecretTypes = (): Promise<any> => {
+    const query = 'SELECT * FROM SECRET_TYPE';
+    return this.executeQuery(query, []);
+  }
 
+  getBaseFieldsByType = (typeId: string): Promise<any> => {
+    const query = 'SELECT * FROM BASE_FIELD WHERE SECRET_TYPE_ID = ' + typeId;
+    return this.executeQuery(query, []);
+  }
+
+  executeQuery = (query: string, params: Array<any>): Promise<any> => {
     return new Promise ((resolve, reject) => {
-      this._db.then((db: SQLiteObject) => {
-        db.executeSql(query, [user.id, user.name, user.pin, user.dateCreated, user.dateLastModified])
+      this.sqlite.create({
+        name: 'secrets.db',
+        location: 'default'
+      })
+      .then((db: SQLiteObject) => {
+        db.executeSql(query, params)
         .then((data) => {
           resolve(data);
         })
