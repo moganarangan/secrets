@@ -8,6 +8,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { SQLite } from '@ionic-native/sqlite/ngx';
+import { SQLiteMock } from './database/sqlite-mock';
 
 import { AppComponent } from './app.component';
 import { LoginRegisterPage } from './login-register/login-register.page';
@@ -53,12 +54,12 @@ import { InitialPage } from './initial/initial.page';
     AppRoutingModule
   ],
   providers: [
-    SQLite,
     CipherService,
     UserService,
     DatabaseService,
     StatusBar,
     SplashScreen,
+    {provide: SQLite, useClass: SQLiteMock},
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
