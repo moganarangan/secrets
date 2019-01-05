@@ -55,7 +55,7 @@ export class LoginRegisterPage implements OnInit {
   }
 
   getRandomId = () => {
-    return Math.random().toString(36).replace('0.', '') ;
+    return Math.random().toString(36).replace('0.', '');
   }
 
    registerAndGo = () => {

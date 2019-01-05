@@ -5,13 +5,10 @@ import { HomePage } from './home/home.page';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginRegisterPage } from './login-register/login-register.page';
-import { InitialPage } from './initial/initial.page';
 import { EditPage } from './edit/edit.page';
 import { SearchPage } from './search/search.page';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'initial', pathMatch: 'full' },
-  { path: 'initial', component: InitialPage },
   { path: 'home', component: HomePage },
   { path: 'login-register', component: LoginRegisterPage },
   { path: 'settings', component: SettingsPage },
