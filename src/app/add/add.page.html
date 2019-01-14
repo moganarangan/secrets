@@ -1,27 +1,44 @@
 <ion-header>
-  <ion-toolbar>
-      <ion-buttons slot="start">
-          <ion-back-button></ion-back-button>
-      </ion-buttons>
-    <ion-title>add</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>add</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-    
-    <ul>
-        <li *ngFor="let type of types">
-            <h3>{{type.typeName}}</h3>
-        </li>
-    </ul>
 
-    <form *ngIf="form"  [formGroup]="form">
-        <ion-item *ngFor="let field of fields">
-            <ion-label position="fixed">{{field.fieldName}}</ion-label>
-            <ion-input type="{{field.fieldType}}" formControlName="{{field.fieldName}}"></ion-input>
+    <form *ngIf="form" [formGroup]="form">
+        <ion-item>
+            <ion-label position="fixed">Name</ion-label>
+            <ion-input type="text" formControlName="secretName"></ion-input>
         </ion-item>
 
-        <ion-button color="secondary" (click)="saveAndClose();">Save</ion-button>
+        <ion-item>
+            <ion-label position="fixed">Select Type</ion-label>
+            <ion-select value="{{types[0].secretTypeId}}" okText="Okay"
+                name="secretType"
+                cancelText="Dismiss"
+                formControlName="secretType"                
+                placeholder="Select Type"
+                (ionChange)="typeChanged($event.target.value)">
+                <ion-select-option value="{{type.secretTypeId}}" *ngFor="let
+                    type of types">
+                    {{type.typeName}}
+                </ion-select-option>
+            </ion-select>
+        </ion-item>
+
+        <div *ngIf="canShowFields">
+            <ion-item *ngFor="let field of fields">
+                <ion-label position="fixed">{{field.fieldName}}</ion-label>
+                <ion-input type="{{field.fieldType}}"
+                    formControlName="{{field.fieldName}}"></ion-input>
+            </ion-item>
+        </div>
+        <br />
+        <ion-button color="secondary" (click)="saveAndClose();" expand="block">Save</ion-button>
     </form>
 
 </ion-content>

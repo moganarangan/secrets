@@ -14,6 +14,7 @@ export class AddPage implements OnInit {
   public form: FormGroup;
   public types: Array<any> = [];
   public fields: Array<any> = [];
+  public canShowFields: Boolean = false;
 
   constructor(private navCtrl: NavController, private stService: SecretTypesService , private fb: FormBuilder) { }
 
@@ -32,17 +33,60 @@ export class AddPage implements OnInit {
           secretTypeId: result.rows.item(i)['SECRET_TYPE_ID'],
           typeName: result.rows.item(i)['NAME'] });
         if (i === 0 ) {
-          this.loadBaseFields(result.rows.item(i)['SECRET_TYPE_ID']);
+          this.loadBaseFields(result.rows.item(i)['SECRET_TYPE_ID'], this.baseFieldsLoaded);
         }
       }
     }
   }
 
-  loadBaseFields = (typeId: string) => {
-    this.stService.getBaseFieldsByType(typeId, this.baseFieldsLoaded, null);
+  loadBaseFields = (typeId: string, next: Function) => {
+    this.stService.getBaseFieldsByType(typeId, next, null);
   }
 
   baseFieldsLoaded = (result: any) => {
+    if (result.rows.length > 0) {
+      this.addFields(result);
+    }
+
+    this.form = this.createGroup();
+    this.canShowFields = true;
+  }
+
+  createGroup = () => {
+    const group = this.fb.group({});
+
+    group.addControl('secretName', new FormControl('', [Validators.required]));
+    group.addControl('secretType', new FormControl('', [Validators.required]));
+
+    this.fields.forEach(control =>
+      group.addControl(control.fieldName,
+        new FormControl('', [Validators.required])));
+    return group;
+  }
+
+  typeChanged = (typeId: string) => {
+    this.canShowFields = false;
+    this.loadBaseFields(typeId, this.typeChangedLoaded);
+  }
+
+  typeChangedLoaded = (result: any) => {
+    this.fields.forEach(field => this.form.removeControl(field.fieldName));
+    this.fields.length = 0;
+
+    if (result.rows.length > 0) {
+    this.addFields(result);
+    this.loadNewFieldsToFormGroup();
+    this.canShowFields = true;
+    }
+  }
+
+  loadNewFieldsToFormGroup = () => {
+    this.fields.forEach(control =>
+      this.form.addControl(control.fieldName,
+        new FormControl('', [Validators.required])));
+  }
+
+  addFields = (result: any) => {
     if (result.rows.length > 0) {
       for (let i = 0; i < result.rows.length; i++) {
         this.fields.push({
@@ -53,22 +97,13 @@ export class AddPage implements OnInit {
       });
       }
     }
-    this.form = this.createGroup();
-  }
-
-  createGroup = () => {
-    const group = this.fb.group({});
-
-    this.fields.forEach(control =>
-      group.addControl(control.fieldName,
-        new FormControl('', [control.isRequired === 1 ? Validators.required : null])));
-    return group;
   }
 
   saveAndClose = () => {
    if (this.form.valid) {
     const now = moment.utc().format();
- }
- this.navCtrl.navigateRoot(['/home']);
-}
+    this.navCtrl.navigateRoot(['/home']);
+  }
+
+  }
 }
