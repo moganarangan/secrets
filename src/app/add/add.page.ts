@@ -48,20 +48,18 @@ export class AddPage implements OnInit {
       this.addFields(result);
     }
 
-    this.form = this.createGroup();
+    this.createGroup();
     this.canShowFields = true;
   }
 
   createGroup = () => {
-    const group = this.fb.group({});
+    const formGroup = this.fb.group({});
 
-    group.addControl('secretName', new FormControl('', [Validators.required]));
-    group.addControl('secretType', new FormControl('', [Validators.required]));
+    formGroup.addControl('secretName', new FormControl('', [Validators.required]));
+    formGroup.addControl('secretType', new FormControl('', [Validators.required]));
 
-    this.fields.forEach(control =>
-      group.addControl(control.fieldName,
-        new FormControl('', [Validators.required])));
-    return group;
+    this.form = formGroup;
+    this.loadFieldsToFormGroup();
   }
 
   typeChanged = (typeId: string) => {
@@ -75,15 +73,19 @@ export class AddPage implements OnInit {
 
     if (result.rows.length > 0) {
     this.addFields(result);
-    this.loadNewFieldsToFormGroup();
+    this.loadFieldsToFormGroup();
     this.canShowFields = true;
     }
   }
 
-  loadNewFieldsToFormGroup = () => {
-    this.fields.forEach(control =>
-      this.form.addControl(control.fieldName,
-        new FormControl('', [Validators.required])));
+  loadFieldsToFormGroup = () => {
+        this.fields.forEach((control) => {
+          if (control.mandatory) {
+            this.form.addControl(control.fieldName, new FormControl('', [Validators.required]));
+          } else {
+            this.form.addControl(control.fieldName, new FormControl(''));
+          }
+        });
   }
 
   addFields = (result: any) => {
@@ -99,10 +101,16 @@ export class AddPage implements OnInit {
     }
   }
 
+  isFormValid = () => {
+    return this.form.valid;
+  }
+
   saveAndClose = () => {
    if (this.form.valid) {
     const now = moment.utc().format();
-    this.navCtrl.navigateRoot(['/home']);
+    // this.navCtrl.navigateRoot(['/home']);
+
+    console.log(this.form.value);
   }
 
   }

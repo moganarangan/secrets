@@ -38,7 +38,7 @@
             </ion-item>
         </div>
         <br />
-        <ion-button color="secondary" (click)="saveAndClose();" expand="block">Save</ion-button>
+        <ion-button color="secondary" (click)="saveAndClose();" [disabled]="!isFormValid()" expand="block">Save</ion-button>
     </form>
 
 </ion-content>
