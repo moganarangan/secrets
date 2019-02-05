@@ -107,11 +107,79 @@ export class AddPage implements OnInit {
 
   saveAndClose = () => {
    if (this.form.valid) {
+     this.stService.addSecret(this.CreatePostModel(), this.addSuccess, null);
+    }
+  }
+
+  addSuccess = () => {
+    this.navCtrl.navigateRoot(['/home']);
+  }
+
+  CreatePostModel = (): Object => {
+    const saveModel = new Object;
+    const secretItemId = this.getRandomId();
     const now = moment.utc().format();
-    // this.navCtrl.navigateRoot(['/home']);
 
-    console.log(this.form.value);
+    saveModel['SECRET_ITEM'] = this.CreateSecretItem(secretItemId, now);
+
+    const secretFieldValue = this.CreateSecretItemFieldValue(secretItemId);
+
+    saveModel['SECRET_ITEM_FIELD'] = secretFieldValue['SECRET_ITEM_FIELD'];
+    saveModel['SECRET_ITEM_VALUE'] = secretFieldValue['SECRET_ITEM_VALUE'];
+
+    return saveModel;
   }
 
+  CreateSecretItem = (secretItemId: String, date: String) => {
+    const SECRET_ITEM = {
+      'SECRET_ITEM_ID': secretItemId,
+      'SECRET_TYPE_ID': this.form.value.secretType,
+      'SECRET_TYPE_NAME': this.types[this.form.value.secretType]['typeName'],
+      'NAME': this.form.value.secretName,
+      'DATECREATED': date,
+      'DATELASTMODIFIED': date,
+      'MAGICTEXT': 'some_MAGICTEXT',
+      'AWESOMETEXT': 'some_AWESOMETEXT'
+    };
+
+    return SECRET_ITEM;
   }
+
+  CreateSecretItemFieldValue = (secretItemId: String) => {
+    const SECRET_ITEM_FIELD = new Array<any>();
+    const SECRET_ITEM_VALUE = new Array<any>();
+
+    this.fields.forEach(field => {
+      const secretItemFieldId = this.getRandomId();
+
+      const itemField = {
+        'SECRET_ITEM_FIELD_ID': secretItemFieldId,
+        'SECRET_ITEM_ID': secretItemId,
+        'FIELDNAME': field.fieldName,
+        'FIELDTYPE': field.fieldType,
+        'MANDATORY': field.isRequired
+      };
+
+      SECRET_ITEM_FIELD.push(itemField);
+
+      const itemValue = {
+        'SECRET_ITEM_VALUE_ID': this.getRandomId(),
+        'SECRET_ITEM_FIELD_ID': secretItemFieldId,
+        'VALUE': this.form.value[field.fieldName]
+      };
+
+      SECRET_ITEM_VALUE.push(itemValue);
+    });
+
+    const result = new Object;
+    result['SECRET_ITEM_FIELD'] = SECRET_ITEM_FIELD;
+    result['SECRET_ITEM_VALUE'] = SECRET_ITEM_VALUE;
+
+    return result;
+  }
+
+  getRandomId = () => {
+    return Math.random().toString(36).replace('0.', '');
+  }
+
 }

@@ -33,4 +33,8 @@ export class SecretTypesService {
     });
   }
 
+  addSecret = (saveModel: Object, sucessCallback: Function, failureCallback: Function) => {
+    const secret = saveModel['SECRET_ITEM'];
+    const query = `INSERT INTO USER VALUES(${secret['SECRET_ITEM_ID']}, ${secret['SECRET_TYPE_ID']}, ${secret['SECRET_TYPE_NAME']}, ${secret['NAME']}, ${secret['DATECREATED']}, ${secret['DATELASTMODIFIED']}, ${secret['MAGICTEXT']}, ${secret['AWESOMETEXT']})`;
+  }
 }
