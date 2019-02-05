@@ -131,10 +131,17 @@ export class AddPage implements OnInit {
   }
 
   CreateSecretItem = (secretItemId: String, date: String) => {
+    let typeName = '';
+    this.types.forEach(type => {
+      if (type['secretTypeId'] === this.form.value.secretType) {
+        typeName = type['typeName'];
+      }
+    });
+
     const SECRET_ITEM = {
       'SECRET_ITEM_ID': secretItemId,
       'SECRET_TYPE_ID': this.form.value.secretType,
-      'SECRET_TYPE_NAME': this.types[this.form.value.secretType]['typeName'],
+      'SECRET_TYPE_NAME': typeName,
       'NAME': this.form.value.secretName,
       'DATECREATED': date,
       'DATELASTMODIFIED': date,

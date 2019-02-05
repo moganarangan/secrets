@@ -101,11 +101,7 @@ export class DatabaseService {
 
   executeQuery = (query: string, params: Array<any>): Promise<any> => {
     return new Promise ((resolve, reject) => {
-      this.sqlite.create({
-        name: 'secrets.db',
-        location: 'default'
-      })
-      .then((db: SQLiteObject) => {
+      this._db.then((db: SQLiteObject) => {
         db.executeSql(query, params)
         .then((data) => {
           resolve(data);
@@ -117,8 +113,18 @@ export class DatabaseService {
     });
   }
 
-  saveSecret = (query: string, params: Array<any>): Promise<any> =>  {
-    return this.executeQuery(query, params);
+  executeBatch = (staments: Array<string>): Promise<any> => {
+    return new Promise ((resolve, reject) => {
+      this._db.then((db: SQLiteObject) => {
+        db.sqlBatch(staments)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+      });
+    });
   }
 
 }
